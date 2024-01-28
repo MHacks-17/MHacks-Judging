@@ -54,4 +54,17 @@ teams = []
 for i in range(10):
     teams.append(Team("Team " + str(i), 1200))
 
+class Rankings():
+    def __init__(self, teams):
+        self.teams = teams
+        self.rankings = pd.DataFrame(columns=['Team', 'Elo'])
+        self.rankings['Team'] = [team.name for team in self.teams]
+        self.rankings['Elo'] = [team.elo for team in self.teams]
+        self.rankings = self.rankings.sort_values(by='Elo', ascending=False).reset_index(drop=True)
 
+    def update(self):
+        self.rankings['Elo'] = [team.elo for team in self.teams]
+        self.rankings = self.rankings.sort_values(by='Elo', ascending=False).reset_index(drop=True)
+
+    def entropy(self):
+        return entropy(self.rankings['Elo'])        
